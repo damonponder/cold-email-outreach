@@ -1,0 +1,38 @@
+{
+  "name": "rankmissile-cold-email",
+  "version": "1.0.0",
+  "description": "AI-assisted lead discovery and qualification system for Rank Missile.",
+  "type": "module",
+  "scripts": {
+    "discover": "tsx src/cli/discover.ts",
+    "test": "echo \"No tests configured yet\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/damonponder/cold-email-outreach.git"
+  },
+  "keywords": [
+    "lead-generation",
+    "anthropic",
+    "typescript",
+    "rankmissile",
+    "sales-automation"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/damonponder/cold-email-outreach/issues"
+  },
+  "homepage": "https://github.com/damonponder/cold-email-outreach#readme",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.90.0",
+    "cheerio": "^1.2.0",
+    "dotenv": "^17.4.2",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@types/node": "^25.6.0",
+    "tsx": "^4.21.0",
+    "typescript": "^6.0.3"
+  }
+}
