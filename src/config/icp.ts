@@ -1,68 +1,126 @@
 import type { ServiceType } from "../leads/types.js";
 
+export type GeoTarget = {
+  city: string;
+  state: string;
+  latitude: number;
+  longitude: number;
+  radiusMeters: number;
+};
+
 export type ICPBucket = {
   niche: string;
-  targetCities: string[];
-  targetStates: string[];
+  geoTargets: GeoTarget[];
   pains: string[];
   preferredServices: ServiceType[];
   minScoreToSend: number;
+  targetLeadCount: number;
 };
 
 export const ICP_BUCKETS: ICPBucket[] = [
   {
-    niche: "roofing",
-    targetCities: ["Houston", "Dallas", "San Antonio"],
-    targetStates: ["TX"],
+   niche: "roofing",
+    geoTargets: [
+      { city: "Houston", state: "TX", latitude: 29.7604, longitude: -95.3698, radiusMeters: 30000 },
+    ],
     pains: [
       "missed inbound calls",
       "weak website conversion",
       "poor local search visibility",
       "no automated lead follow-up"
     ],
-    preferredServices: [
-      "ai_appointment_setter",
-      "seo",
-      "website",
-      "gbp_management",
-      "ppc"
-    ],
-    minScoreToSend: 70
+    preferredServices: ["ai_appointment_setter", "seo", "website", "gbp_management", "ppc"],
+    minScoreToSend: 70,
+    targetLeadCount: 20
   },
   {
     niche: "hvac",
-    targetCities: ["Houston", "Austin", "Dallas"],
-    targetStates: ["TX"],
+       geoTargets: [
+      { city: "Houston", state: "TX", latitude: 29.7604, longitude: -95.3698, radiusMeters: 30000 },
+    ],
     pains: [
-      "slow lead response",
-      "poor online visibility",
-      "outdated website",
-      "no follow-up automation"
+      "missed inbound calls",
+      "weak website conversion",
+      "poor local search visibility",
+      "no automated lead follow-up"
     ],
-    preferredServices: [
-      "ai_appointment_setter",
-      "seo",
-      "website",
-      "ppc"
+    preferredServices: ["ai_appointment_setter", "seo", "website", "gbp_management", "ppc"],
+    minScoreToSend: 70,
+    targetLeadCount: 20
+  },
+  {
+    niche: "plumber",
+      geoTargets: [
+      { city: "Houston", state: "TX", latitude: 29.7604, longitude: -95.3698, radiusMeters: 30000 },
     ],
-    minScoreToSend: 68
+    pains: [
+      "missed inbound calls",
+      "weak website conversion",
+      "poor local search visibility",
+      "no automated lead follow-up"
+    ],
+    preferredServices: ["ai_appointment_setter", "seo", "website", "gbp_management", "ppc"],
+    minScoreToSend: 70,
+    targetLeadCount: 20
+  },
+    {
+    niche: "electrician",
+       geoTargets: [
+      { city: "Houston", state: "TX", latitude: 29.7604, longitude: -95.3698, radiusMeters: 30000 },
+    ],
+    pains: [
+      "missed inbound calls",
+      "weak website conversion",
+      "poor local search visibility",
+      "no automated lead follow-up"
+    ],
+    preferredServices: ["ai_appointment_setter", "seo", "website", "gbp_management", "ppc"],
+    minScoreToSend: 70,
+    targetLeadCount: 20
+  },
+    {
+    niche: "home services",
+       geoTargets: [
+      { city: "Houston", state: "TX", latitude: 29.7604, longitude: -95.3698, radiusMeters: 30000 },
+    ],
+    pains: [
+      "missed inbound calls",
+      "weak website conversion",
+      "poor local search visibility",
+      "no automated lead follow-up"
+    ],
+    preferredServices: ["ai_appointment_setter", "seo", "website", "gbp_management", "ppc"],
+    minScoreToSend: 70,
+    targetLeadCount: 20
   },
   {
     niche: "med spa",
-    targetCities: ["Houston", "Austin", "Dallas"],
-    targetStates: ["TX"],
+       geoTargets: [
+      { city: "Houston", state: "TX", latitude: 29.7604, longitude: -95.3698, radiusMeters: 30000 },
+    ],
     pains: [
-      "booking friction",
-      "weak lead nurturing",
-      "low social proof conversion",
-      "slow response to inquiries"
+      "missed inbound calls",
+      "weak website conversion",
+      "poor local search visibility",
+      "no automated lead follow-up"
     ],
-    preferredServices: [
-      "ai_appointment_setter",
-      "ppc",
-      "social_media",
-      "website"
+    preferredServices: ["ai_appointment_setter", "seo", "website", "gbp_management", "ppc"],
+    minScoreToSend: 70,
+    targetLeadCount: 20
+  },
+  {
+    niche: "chiropractic",
+       geoTargets: [
+      { city: "Houston", state: "TX", latitude: 29.7604, longitude: -95.3698, radiusMeters: 30000 },
     ],
-    minScoreToSend: 72
+    pains: [
+      "missed inbound calls",
+      "weak website conversion",
+      "poor local search visibility",
+      "no automated lead follow-up"
+    ],
+    preferredServices: ["ai_appointment_setter", "seo", "website", "gbp_management", "ppc"],
+    minScoreToSend: 70,
+    targetLeadCount: 20
   }
 ];

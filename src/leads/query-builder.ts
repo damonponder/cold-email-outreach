@@ -5,37 +5,91 @@ export type LeadQuery = {
   city: string;
   state: string;
   search: string;
+  targetLeadCount: number;
+  latitude: number;
+  longitude: number;
+  radiusMeters: number;
 };
 
 export function buildLeadQueries(): LeadQuery[] {
   const queries: LeadQuery[] = [];
 
-  for (const bucket of ICP_BUCKETS) {
-    for (const city of bucket.targetCities) {
-      for (const state of bucket.targetStates) {
-        queries.push(
+ for (const bucket of ICP_BUCKETS) {
+    for (const target of bucket.geoTargets) {
+      queries.push(
           {
             niche: bucket.niche,
-            city,
-            state,
-            search: `${bucket.niche} companies in ${city}, ${state}`
+            city: target.city,
+            state: target.state,
+            search: `${bucket.niche} in ${target.city}, ${target.state}`,
+            targetLeadCount: bucket.targetLeadCount,
+            latitude: target.latitude,
+            longitude: target.longitude,
+            radiusMeters: target.radiusMeters
           },
           {
             niche: bucket.niche,
-            city,
-            state,
-            search: `${bucket.niche} near ${city}, ${state}`
+            city: target.city,
+            state: target.state,
+            search: `${bucket.niche} in ${target.city}, ${target.state}`,
+            targetLeadCount: bucket.targetLeadCount,
+            latitude: target.latitude,
+            longitude: target.longitude,
+            radiusMeters: target.radiusMeters
           },
           {
             niche: bucket.niche,
-            city,
-            state,
-            search: `best ${bucket.niche} ${city} ${state}`
+            city: target.city,
+            state: target.state,
+            search: `best ${bucket.niche} in ${target.city}, ${target.state}`,
+            targetLeadCount: bucket.targetLeadCount,
+            latitude: target.latitude,
+            longitude: target.longitude,
+            radiusMeters: target.radiusMeters
+          },
+           {
+            niche: bucket.niche,
+            city: target.city,
+            state: target.state,
+            search: `${bucket.niche} company in ${target.city}, ${target.state}`,
+            targetLeadCount: bucket.targetLeadCount,
+            latitude: target.latitude,
+            longitude: target.longitude,
+            radiusMeters: target.radiusMeters
+          },
+           {
+            niche: bucket.niche,
+            city: target.city,
+            state: target.state,
+            search: `${bucket.niche} company in ${target.city}, ${target.state}`,
+            targetLeadCount: bucket.targetLeadCount,
+            latitude: target.latitude,
+            longitude: target.longitude,
+            radiusMeters: target.radiusMeters
+          },
+           {
+            niche: bucket.niche,
+            city: target.city,
+            state: target.state,
+            search: `${bucket.niche} company in ${target.city}, ${target.state}`,
+            targetLeadCount: bucket.targetLeadCount,
+            latitude: target.latitude,
+            longitude: target.longitude,
+            radiusMeters: target.radiusMeters
+          },
+           {
+            niche: bucket.niche,
+            city: target.city,
+            state: target.state,
+            search: `${bucket.niche} company in ${target.city}, ${target.state}`,
+            targetLeadCount: bucket.targetLeadCount,
+            latitude: target.latitude,
+            longitude: target.longitude,
+            radiusMeters: target.radiusMeters
           }
         );
       }
     }
-  }
 
   return queries;
 }

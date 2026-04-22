@@ -3,7 +3,7 @@ import { buildLeadQueries } from "./query-builder.js";
 import { normalizeLead, dedupeLeads } from "./normalize.js";
 import { preScoreLead } from "./score.js";
 import { qualifyLead } from "./qualify.js";
-import { MockLeadProvider } from "../providers/mock.provider.js";
+import { GooglePlacesProvider } from "../providers/google.provider.js";
 import { scanWebsite } from "../providers/website.provider.js";
 import { logStep } from "../utils/logger.js";
 
@@ -29,8 +29,25 @@ async function enrichLeadWithWebsiteSignals(lead: BusinessLead): Promise<Busines
   };
 }
 
+function passesHardFilter(lead: BusinessLead): boolean {
+  if (!lead.businessName) return false;
+  if (!lead.niche) return false;
+  if (!lead.city || !lead.state) return false;
+
+  // require at least one useful signal before Claude
+  const hasDiscoveryValue =
+    Boolean(lead.website) ||
+    Boolean(lead.phone) ||
+    (lead.reviewCount ?? 0) > 0 ||
+    (lead.googleRating ?? 0) > 0;
+
+  return hasDiscoveryValue;
+}
+
 export async function runDiscoveryPipeline(): Promise<PipelineResult> {
-  const provider = new MockLeadProvider();
+  const provider = new GooglePlacesProvider();
+  const MAX_RAW_LEADS = 300;
+  const nicheCounts: Record<string, number> = {};
   const queries = buildLeadQueries();
 
   logStep(`Generated ${queries.length} search queries`);
@@ -38,8 +55,29 @@ export async function runDiscoveryPipeline(): Promise<PipelineResult> {
   const rawLeads: BusinessLead[] = [];
 
   for (const query of queries) {
+    if (rawLeads.length >= MAX_RAW_LEADS) {
+      logStep(`Reached global cap of ${MAX_RAW_LEADS} leads`);
+      break;
+    }
+
+    const niche = query.niche;
+    const target = query.targetLeadCount;
+    const currentCount = nicheCounts[niche] ?? 0;
+
+    if (currentCount >= target) {
+      continue;
+    }
+
     const found = await provider.search(query);
-    rawLeads.push(...found);
+
+    const remainingNeeded = target - currentCount;
+    const globalRemaining = MAX_RAW_LEADS - rawLeads.length;
+    const allowedToTake = Math.min(remainingNeeded, globalRemaining);
+
+    const trimmed = found.slice(0, allowedToTake);
+
+    rawLeads.push(...trimmed);
+    nicheCounts[niche] = currentCount + trimmed.length;
   }
 
   logStep(`Collected ${rawLeads.length} raw leads`);
@@ -49,8 +87,11 @@ export async function runDiscoveryPipeline(): Promise<PipelineResult> {
 
   logStep(`Deduped leads down to ${deduped.length}`);
 
+  const hardFiltered = deduped.filter(passesHardFilter);
+  logStep(`Hard-filtered leads down to ${hardFiltered.length}`);
+
   const enrichedLeads: BusinessLead[] = [];
-  for (const lead of deduped) {
+  for (const lead of hardFiltered) {
     enrichedLeads.push(await enrichLeadWithWebsiteSignals(lead));
   }
 

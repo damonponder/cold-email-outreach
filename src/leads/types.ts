@@ -27,12 +27,14 @@ export type WebsiteSignals = {
 
 export type BusinessLead = {
   source: string;
+  externalId?: string;
   businessName: string;
   website?: string;
   phone?: string;
   email?: string;
   city?: string;
   state?: string;
+  address?: string;
   niche?: string;
   googleRating?: number;
   reviewCount?: number;
